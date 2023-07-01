@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Haadi R | Assignment 6</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="lib/font/css/open-iconic-bootstrap.min.css" rel="stylesheet">
+    <style>
+        .todo-remove {
+            cursor: pointer;
+            color: #CCC;
+        }
+
+        .todo-remove:hover {
+            color: #dc3545;
+        }
+
+        .todo-remove:active {
+            color: #ba1323;
+        }
+
+        table {
+            border: 1px solid black;
+        }
+
+        thead {
+            text-align: center;
+        }
+
+        td {
+            padding: 0 15px;
+            margin-bottom: 15px;
+        }
+
+        .imageTD {
+            width: 700px;
+        }
+
+        .todo-image {
+            width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .todo-item {
+            /* background-color: red; */
+        }
+
+        .todo-desc {
+            /* background-color: green; */
+        }
+    </style>
+
+</head>
+
+<body class="py-4">
+
+    <div class="container">
+        <div class="row">
+            <h1 class="col-12">Photo Gallery</h1>
+        </div> <!-- .row -->
+
+        <div class="row mt-4">
+            <h2 class="col-12">Add Posts</h2>
+            <div class="col-12 mt-4">
+                <form id="gallery">
+                    <!-- replaced with prio-todo -->
+
+                    <div class="col-12 mt-2 col-sm-6 mt-sm-0">
+                        <div class="form-group row">
+                            <label for="gallery-item" class="col-sm-2 col-form-label">Title:</label>
+                            <div class="col-sm-10">
+
+                                <input type="text" class="form-control" id="gallery-item" placeholder="Haadi's Photo">
+
+                                <small id="title-error" class="form-text text-danger"></small>
+
+                            </div>
+                        </div> <!-- .form-group -->
+                    </div> <!-- .col -->
+
+                    <div class="col-12 mt-2 col-sm-6 mt-sm-0">
+                        <div class="form-group row">
+                            <label for="gallery-item" class="col-sm-2 col-form-label">Description:</label>
+                            <div class="col-sm-10">
+
+                                <input type="text" class="form-control" id="description"
+                                    placeholder="Picture taken during sunset etc...">
+
+                                <small id="desc-error" class="form-text text-danger"></small>
+
+                            </div>
+                        </div> <!-- .form-group -->
+                    </div> <!-- .col -->
+
+                    <div class="col-12 mt-2 col-sm-6 mt-sm-0">
+                        <div class="form-group row">
+                            <label for="gallery-item" class="col-sm-2 col-form-label">Image:</label>
+                            <div class="col-sm-10">
+
+                                <input type="text" class="form-control" id="gallery-image" placeholder="URL">
+                                <small class="form-text text-muted">img/steph.jpg is url for example image, use for
+                                    testing</small>
+
+                            </div>
+                        </div> <!-- .form-group -->
+                    </div> <!-- .col -->
+
+                    <div class="col-12 mt-2 col-sm-auto mt-sm-0">
+                        <button role="button" type="submit" class="btn btn-primary">Add</button>
+                    </div> <!-- .col -->
+
+                </form>
+            </div> <!-- .col -->
+        </div> <!-- .row -->
+
+        <div class="row">
+            <div class="col-12 mt-3">
+                <!-- col-sm-8 -->
+
+                <button id="gallery-delete" class="btn btn-outline-danger mb-3">Delete All</button>
+
+                <table id="gallery-list">
+
+                    <thead>
+                        <tr>
+                            <th scope="col">Image</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Description</th>
+                            <!-- <th scope="col"></th> -->
+                        </tr>
+                    </thead>
+                    <tbody id="gallery-body">
+                        <tr>
+                            <td class="imageTD">
+                                <img src="img/steph.jpg" class="todo-image">
+                            </td>
+                            <td class="todo-item">test</td>
+                            <td class="todo-desc">123456789 test test description</td>
+                            <td><span class="todo-remove oi oi-circle-x" title="Remove">x</span></td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div> <!-- .col -->
+        </div> <!-- .row -->
+    </div> <!-- .container -->
+
+    <script>
+
+        var map1 = new Map();
+
+        document.querySelector("#gallery-delete").onclick = () => {
+            document.querySelector("#gallery-list").innerHTML = ''
+        }
+
+        document.querySelector("#gallery").onsubmit = () => {
+
+            const title = document.querySelector("#gallery-item").value.trim()
+            const desc = document.querySelector("#description").value.trim()
+            const image = document.querySelector("#gallery-image").value.trim()
+            let tbody = document.querySelector("#gallery-list tbody")
+
+            if (title.length > 0 && desc.length > 0) {
+
+                var table = document.getElementById("gallery-list");
+                for (var i = 1, row; row = table.rows[i]; i++) {
+                    if (row.cells[1].innerHTML === title && row.cells[2].innerHTML === desc) {
+                        alert("Duplicate")
+                        return false
+                    }
+                }
+
+                const tr = document.createElement("tr")
+
+                const image2 = document.createElement("img")
+                const divImage = document.createElement("td")
+                const divItem = document.createElement("td")
+                const divDesc = document.createElement("td")
+                const divInfo = document.createElement("td")
+                const spanBadge = document.createElement("span")
+                const spanRemove = document.createElement("span")
+
+                if (image.length === 0) {
+                    image2.src = "img/imageNotFound.jpeg"
+                }
+                else {
+                    image2.src = image;
+                }
+
+                tr.appendChild(divImage)
+                divImage.appendChild(image2)
+
+                tr.appendChild(divItem)
+
+                tr.appendChild(divDesc)
+
+                tr.appendChild(divInfo)
+                divInfo.appendChild(spanBadge)
+                divInfo.appendChild(spanRemove)
+
+
+                tbody.appendChild(tr)
+
+
+
+                // document.getElementById("#gallery-list").appendChild(tr);
+
+
+
+
+                // divImage.innerHTML = divImage
+
+                // add classes
+                // li.classList.add("list-group-item", "d-flex", "justify-content-between")
+                tbody
+                divImage.classList.add("imageTD")
+                image2.classList.add("todo-image")
+                divItem.classList.add("todo-item")
+                divInfo.classList.add("todo-info")
+                divDesc.classList.add("todo-desc")
+                spanBadge.classList.add("badge", "badge-pill", "mr-3")
+                spanRemove.classList.add("todo-remove", "oi", "oi-circle-x")
+
+                divItem.innerHTML = title
+                divDesc.innerHTML = desc
+                spanRemove.innerHTML = "x"
+
+
+                bindRemoveBtns()
+
+                // clear input field
+                document.querySelector("#gallery-item").value = ''
+                document.querySelector("#description").value = ''
+                document.querySelector("#gallery-image").value = ''
+
+                document.querySelector("#title-error").innerHTML = ''
+                document.querySelector("#desc-error").innerHTML = ''
+            }
+            else if (title.length === 0 && desc.length === 0) {
+                document.querySelector("#desc-error").innerHTML = "* Required"
+                document.querySelector("#title-error").innerHTML = "* Required"
+            }
+            else if (title.length > 0 && desc.length === 0) {
+                document.querySelector("#desc-error").innerHTML = "* Required"
+                document.querySelector("#title-error").innerHTML = ""
+            }
+            else if (desc.length > 0 && title.length === 0) {
+                document.querySelector("#title-error").innerHTML = "* Required"
+                document.querySelector("#desc-error").innerHTML = ""
+            }
+            return false
+        }
+
+        function bindRemoveBtns() {
+            const buttons = document.querySelectorAll(".todo-remove")
+
+            for (btn of buttons) {
+                btn.onclick = function () {
+                    // console.log(this.parentElement.parentElement)
+                    this.parentElement.parentElement.remove()
+                }
+            }
+        }
+
+        bindRemoveBtns()
+
+    </script>
+
+</body>
+
+</html>
